@@ -154,7 +154,7 @@ class REC_Processor(Processor):
 
         # region arguments yapf: disable
         # evaluation
-        parser.add_argument('--show_topk', type=int, default=[1, 5], nargs='+', help='which Top K accuracy will be shown')
+        parser.add_argument('--show_topk', type=int, default=[1, 3], nargs='+', help='which Top K accuracy will be shown')
         # optim
         parser.add_argument('--base_lr', type=float, default=0.01, help='initial learning rate')
         parser.add_argument('--step', type=int, default=[], nargs='+', help='the epoch where optimizer reduce the learning rate')

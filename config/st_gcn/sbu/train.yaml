@@ -1,0 +1,33 @@
+work_dir: ./work_dir/recognition/kinetics_skeleton/ST_GCN
+
+# feeder
+feeder: feeder.feeder.Feeder
+train_feeder_args:
+  random_choose: False
+  random_move: False
+  window_size: 10
+  data_path: /home/bob/Workspace/undergrad-project/dataset/SBU/train_data.npy
+  label_path: /home/bob/Workspace/undergrad-project/dataset/SBU/train_label.pkl
+test_feeder_args:
+  data_path: /home/bob/Workspace/undergrad-project/dataset/SBU/val_data.npy
+  label_path: /home/bob/Workspace/undergrad-project/dataset/SBU/val_label.pkl
+
+# model
+model: net.st_gcn.Model
+model_args:
+  in_channels: 3
+  num_class: 8
+  edge_importance_weighting: True
+  graph_args:
+    layout: 'sbu'
+    strategy: 'spatial'
+
+# training
+device: [0,1,2,3]
+batch_size: 16
+test_batch_size: 32
+
+#optim
+base_lr: 0.1
+step: [40, 80, 120, 160, 200]
+num_epoch: 200

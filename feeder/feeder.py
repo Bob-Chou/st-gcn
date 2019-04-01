@@ -49,7 +49,6 @@ class Feeder(torch.utils.data.Dataset):
 
     def load_data(self, mmap):
         # data: N C V T M
-
         # load label
         with open(self.label_path, 'rb') as f:
             self.sample_name, self.label = pickle.load(f)
@@ -74,7 +73,7 @@ class Feeder(torch.utils.data.Dataset):
         # get data
         data_numpy = np.array(self.data[index])
         label = self.label[index]
-        
+
         # processing
         if self.random_choose:
             data_numpy = tools.random_choose(data_numpy, self.window_size)

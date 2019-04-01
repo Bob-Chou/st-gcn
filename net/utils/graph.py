@@ -70,6 +70,14 @@ class Graph():
             neighbor_link = [(i - 1, j - 1) for (i, j) in neighbor_1base]
             self.edge = self_link + neighbor_link
             self.center = 2
+        elif layout == 'sbu':
+            self.num_node = 15
+            self_link = [(i, i) for i in range(self.num_node)]
+            neighbor_link = [(0, 1), (1, 2), (1, 3), (2, 3), (1, 6), (3, 4),
+                             (4, 5), (2, 6), (6, 7), (7, 8), (2, 9), (2, 12),
+                             (9, 10), (10, 11), (12, 13), (13, 14)]
+            self.edge = self_link + neighbor_link
+            self.center = 2
         # elif layout=='customer settings'
         #     pass
         else:
