@@ -53,7 +53,7 @@ class Model(nn.Module):
             st_gcn(256, 256, kernel_size, 1, **kwargs),
             st_gcn(256, 256, kernel_size, 1, **kwargs),
         ))
-
+        self.gru = nn.GRU(256, 256, batch_first=True)
         # initialize parameters for edge importance weighting
         if edge_importance_weighting:
             self.edge_importance = nn.ParameterList([
@@ -82,9 +82,14 @@ class Model(nn.Module):
             x, _ = gcn(x, self.A * importance)
 
         # global pooling
-        x = F.avg_pool2d(x, x.size()[2:])
-        x = x.view(N, M, -1, 1, 1).mean(dim=1)
-
+        # x = F.avg_pool2d(x, x.size()[2:])
+        x = F.avg_pool2d(x, [1, T])
+        # x = x.view(N, M, -1, 1, 1).mean(dim=1)
+        x = x.view(N, M, 256, -1).mean(dim=1)
+        # TODO: use gru through timestep to predict
+        x, _ = self.gru(x.permute(0, 2, 1))
+        # x = x[:, -1, :].view(N, -1, 1, 1)
+        x = x.mean(dim=1).view(N, -1, 1, 1)
         # prediction
         x = self.fcn(x)
         x = x.view(x.size(0), -1)
