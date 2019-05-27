@@ -1,4 +1,3 @@
-
 import os
 import sys
 import pickle
@@ -80,12 +79,19 @@ if __name__ == '__main__':
         default='/home/bob/Workspace/undergrad-project/dataset/SBU')
     arg = parser.parse_args()
     part = ['train', 'val']
-    for p, name in zip(part, walk_sbu_data(arg.data_path, ['s05'])):
-        data_out_path = '{}/{}_data.npy'.format(arg.out_folder, p)
-        label_out_path = '{}/{}_label.pkl'.format(arg.out_folder, p)
+    k_folds = [['s01s02', 's03s04', 's05s02', 's06s04'],
+               ['s02s03', 's02s07', 's03s05', 's05s03'],
+               ['s01s03', 's01s07', 's07s01', 's07s03'],
+               ['s02s01', 's02s06', 's03s02', 's03s06'],
+               ['s04s02', 's04s03', 's04s06', 's06s02', 's06s03']]
+    for i, valid_list in enumerate(k_folds):
+        for p, name in zip(part, walk_sbu_data(arg.data_path, valid_list)):
+            data_out_path = '{}/{}_data.{}.npy'.format(arg.out_folder, p, i)
+            label_out_path = '{}/{}_label.{}.pkl'.format(arg.out_folder, p, i)
 
-        if not os.path.exists(arg.out_folder):
-            os.makedirs(arg.out_folder)
-        gen_sbu_data(name, data_out_path, label_out_path)
+            if not os.path.exists(arg.out_folder):
+                os.makedirs(arg.out_folder)
+            gen_sbu_data(name, data_out_path, label_out_path)
+
 
 
